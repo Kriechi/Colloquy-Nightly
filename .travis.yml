@@ -1,0 +1,16 @@
+notifications:
+  email: false
+
+language: objective-c
+
+script:
+  - brew install coreutils
+  - mkdir -p "build/Release/Colloquy.mdimporter"
+  - mkdir -p "$HOME/Library/Frameworks/"
+  - unzip "fscript_2.3_10.9.zip" "FScript.framework/*" -d "$HOME/Library/Frameworks/"
+
+  - xcodebuild  -project 'Colloquy (Old).xcodeproj' -configuration Release
+
+  - zip -r Colloquy.app.zip build/Release/Colloquy.app
+  - ls -lah Colloquy.app.zip
+  - gtimeout -k 90 90 curl -i -F file=@Colloquy.app.zip http://catrobat-web-test.ist.tugraz.at:1234
